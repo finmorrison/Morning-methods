@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import NewRun from './NewRuns/newRuns'
 import SingleRun from './ArrayOfRuns/SingleRun'
-
+import './reset.css'
+import './NewRuns/newRuns.css'
+// import RunsDisplay from './ArrayOfRuns/runsDisplay'
 
 class App extends Component {
   constructor() {
@@ -11,6 +13,8 @@ class App extends Component {
     this.state = {
       runs: []
     }
+    this.handleSave = this.handleSave.bind(this)
+
   }
 
   componentDidMount = () => {
@@ -25,24 +29,40 @@ class App extends Component {
     const { runTitle, runDate, runLocation, runTotalTime, runTotalDistance
     } = obj
     axios.post('/api/newRun', {
-         runTitle, runDate, runLocation, runTotalTime, runTotalDistance 
-        }).then((res) => {
-        this.setState({
-            runs: res.data
-        })
+      runTitle, runDate, runLocation, runTotalTime, runTotalDistance
+    }).then((res) => {
+      this.setState({
+        runs: res.data
+      })
     })
-}
+  }
+  handleSave(obj, id) {
+    const { runTitle, runDate, runLocation, runTotalTime, runTotalDistance } = obj
+    console.log(obj, id)
+    axios.put(`/api/editRun/${id}`, { runTitle, runDate, runLocation, runTotalTime, runTotalDistance }).then((res) => {
+      this.setState({ runs: res.data })
+    })
+  }
+
+  handleDelete = (id) => {
+    axios.delete(`/api/deleteRun/${id}`).then((res) => {
+      this.setState({ runs: res.data })
+    })
+  }
+
+  
 
   render() {
     let runsDisplay = this.state.runs.map((run) => {
-      console.log(run)
       return <SingleRun key={run.id}
-    
+        id={run.id}
         runTitle={run.runTitle}
         runDate={run.runDate}
         runLocation={run.runLocation}
         runTotalTime={run.runTotalTime}
         runTotalDistance={run.runTotalDistance}
+        handleSave={this.handleSave}
+        handleDelete={this.handleDelete}
       />
 
     })
@@ -54,7 +74,8 @@ class App extends Component {
           <h1>Running Log</h1>
         </nav>
         <div>
-          <NewRun handleCreateRun = {this.handleCreateRun} />
+          <NewRun handleCreateRun={this.handleCreateRun}
+          />
           {runsDisplay}
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios';
+import './newRuns.css'
 
 class newRun extends Component {
     constructor(props) {
@@ -19,11 +19,10 @@ class newRun extends Component {
         this.setState({ [key]: input })
     }
 
-    
+
 
     render() {
-        
-        
+
         return (
             <div>
                 <input placeholder='Run Title' onChange={(e) => this.handleChange('runTitle', e.target.value)} />
@@ -31,6 +30,7 @@ class newRun extends Component {
                 <input placeholder='Location' onChange={(e) => this.handleChange('runLocation', e.target.value)} />
                 <input placeholder='Run Total Time' onChange={(e) => this.handleChange('runTotalTime', e.target.value)} />
                 <input placeholder='Run Total Distance' onChange={(e) => this.handleChange('runTotalDistance', e.target.value)} />
+                <p></p>
                 <button onClick={() => this.props.handleCreateRun(this.state)}>Add Run</button>
             </div>
         )

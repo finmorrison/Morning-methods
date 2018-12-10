@@ -1,0 +1,13 @@
+
+
+.div {
+    border: 2px solid black;
+    background-color: #3E5855
+}
+
+#input {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 35 px;
+    
+}
